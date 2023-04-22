@@ -1,3 +1,4 @@
+import uvicorn
 from fastapi import FastAPI
 from fastapi import UploadFile, File
 from tempfile import NamedTemporaryFile
@@ -20,6 +21,10 @@ app.add_middleware(
     allow_headers=["*"],
 )    
 
+@app.get("/hello")
+def return_greetings():
+    return {"msg" : "Hello!"}
+
 @app.post("/video")
 async def classify_video(file: UploadFile = File(...)):
     if not file.filename.endswith(".mp4"):
@@ -39,3 +44,6 @@ async def classify_video(file: UploadFile = File(...)):
     finally:
         os.remove(temp.name)
     return {"Pose" : prediction}
+
+if __name__ == '__main__':
+    uvicorn.run(app, host='0.0.0.0', port=8000)
