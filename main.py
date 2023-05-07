@@ -44,6 +44,3 @@ async def classify_video(file: UploadFile = File(...)):
     finally:
         os.remove(temp.name)
     return {"Pose" : prediction}
-
-if __name__ == '__main__':
-    uvicorn.run(app, host='0.0.0.0', port=8000)
