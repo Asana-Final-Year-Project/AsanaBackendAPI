@@ -81,10 +81,16 @@ def listframe(path):
     frame_num = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
     f_img = 0
     count = 0
+
+    step = 1
+
+    if(frame_num >= 256):
+       step = int(frame_num / 256)
+
     while (count<frame_num): 
         try:
             success, cap = video.read()
-            if count % (int(frame_num / 256)) == 0 and (f_img<256):
+            if (count % step == 0) and (f_img<256):
                 df  = landmark_det(cap)
                 local.append(df)
                 f_img =f_img+1
@@ -94,7 +100,6 @@ def listframe(path):
 
         except:
           count = count+1
-    print(f'done dong doing {path}')
     return local
 
 
@@ -119,4 +124,3 @@ def prediction_main(videopath):
   values, counts = np.unique(array, return_counts=True)
   ind = np.argmax(counts)
   return target[values[ind]]
-
